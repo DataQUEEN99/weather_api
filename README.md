@@ -1,0 +1,2 @@
+# weather_api
+THIS IS THE SIMPLE WEATHER API
