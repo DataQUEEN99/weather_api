@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather App</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #6dd5fa, #2980b9);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 300px;
+    }
+
+    input {
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      background-color: #fff;
+      color: #2980b9;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #f0f0f0;
+    }
+
+    .result {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Weather App</h2>
+    <input type="text" id="locationInput" placeholder="Enter location">
+    <button onclick="getWeather()">Get Weather</button>
+    <div class="result" id="weatherResult"></div>
+  </div>
+
+  <script>
+    async function getWeather() {
+      const location = document.getElementById('locationInput').value;
+      const apiKey = '103cfb31657844f49b1103330250508';
+      const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=yes`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.error) {
+          document.getElementById('weatherResult').innerHTML = `<p>Error: ${data.error.message}</p>`;
+        } else {
+          const temp = data.current.temp_c;
+          const condition = data.current.condition.text;
+          const city = data.location.name;
+          const country = data.location.country;
+
+          document.getElementById('weatherResult').innerHTML = `
+            <h3>${city}, ${country}</h3>
+            <p><strong>Temperature:</strong> ${temp}°C</p>
+            <p><strong>Condition:</strong> ${condition}</p>
+          `;
+        }
+      } catch (error) {
+        document.getElementById('weatherResult').innerHTML = `<p>Failed to fetch data.</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
+🔍 How It Works
+The user enters a city name (like “London”).
+
+Clicking the button runs getWeather() function.
+
+It calls the WeatherAPI using your API key.
+
+The weather data (temperature, condition) is shown in the result area.
